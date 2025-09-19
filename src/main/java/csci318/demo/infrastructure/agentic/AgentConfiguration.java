@@ -1,6 +1,7 @@
 package csci318.demo.infrastructure.agentic;
 
-import csci318.demo.service.BookRecommendationAgent;
+import csci318.demo.service.RAGAgent;
+import csci318.demo.service.ChatAgent;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.embedding.Embedding;
@@ -30,15 +31,15 @@ import java.util.stream.Collectors;
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 
 @Configuration
-public class BookRecommendationConfiguration {
+public class AgentConfiguration {
 
-    private static final Logger log = LoggerFactory.getLogger(BookRecommendationConfiguration.class);
+    private static final Logger log = LoggerFactory.getLogger(AgentConfiguration.class);
 
     @Bean
     ChatMemoryProvider chatMemoryProvider() {
         return memoryId -> MessageWindowChatMemory.builder()
                 .id(memoryId)
-                .maxMessages(20)
+                .maxMessages(10)
                 .build();
     }
 
@@ -93,12 +94,21 @@ public class BookRecommendationConfiguration {
     }
 
     @Bean
-    BookRecommendationAgent bookRecommendationAgent(ChatModel chatModel,
-                                                    ContentRetriever contentRetriever,
-                                                    ChatMemoryProvider chatMemoryProvider) {
-        return AiServices.builder(BookRecommendationAgent.class)
+    RAGAgent bookRecommendationAgent(ChatModel chatModel,
+                                     ContentRetriever contentRetriever,
+                                     ChatMemoryProvider chatMemoryProvider) {
+        return AiServices.builder(RAGAgent.class)
                 .chatModel(chatModel)
                 .contentRetriever(contentRetriever)
+                .chatMemoryProvider(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    ChatAgent chatAgent(ChatModel chatModel,
+                        ChatMemoryProvider chatMemoryProvider) {
+        return AiServices.builder(ChatAgent.class)
+                .chatModel(chatModel)
                 .chatMemoryProvider(chatMemoryProvider)
                 .build();
     }

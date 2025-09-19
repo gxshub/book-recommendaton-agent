@@ -6,7 +6,7 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 
 
-public interface BookRecommendationAgent {
+public interface RAGAgent {
 
     @SystemMessage("""
      You are a helpful and friendly book recommendation expert.
