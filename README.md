@@ -6,7 +6,8 @@ It is built using **Spring Boot** for backend development and **LangChain4j** fo
 ## 1. Book Recommendation Workflow
 
 - The [`ChatAgent`](./src/main/java/csci318/demo/service/ChatAgent.java) gathers user preferences and generates a concise book description.
-- The [`RAGAgent`](./src/main/java/csci318/demo/service/RAGAgent.java) uses the description to provide specific book recommendations.
+- The [`RAGAgent`](./src/main/java/csci318/demo/service/RAGAgent.java) 
+implements a vector store that stores book data, and uses the description to provide specific book recommendations.
 - The two agents share a session-based memory to remember recent dialogues and are orchestrated by the [`RecommendationService`](./src/main/java/csci318/demo/service/RecommendationService.java).
 
 ```java
@@ -18,15 +19,14 @@ public RecommendationService(ChatAgent chatAgent, RAGAgent ragAgent) {
 
 ## 2. Interfaces
 ### 2.1 REST API
+Linux/MacOS:
 ```shell
-# Linux/MacOS
 curl -G "http://localhost:8080/chat-recommend" \
 --data-urlencode "sessionId=1" \
 --data-urlencode "userMessage=I would like to get a science fiction for my 10 year-old boy."
 ```
-
+Windows CMD:
 ```shell
-# Windows
 curl -G "http://localhost:8080/chat-recommend" ^
 --data-urlencode "sessionId=1" ^
 --data-urlencode "userMessage=I would like to get a science fiction for my 10 year-old boy."
@@ -37,12 +37,12 @@ The agent will remember the recent dialogues per session defined by `sessionId`.
 ### 2.2 Interactive HTML Chat
 Use the HTML frontend to have a conversation with the agents:
 
+Linux/MacOS:
 ```shell
-# Linux/MacOS
 open ./src/main/resources/static/chat.html
 ```
+Windows CMD:
 ```shell
-# Windows
 start ./src/main/resources/static/chat.html
 ```
 <img src="./screenshot/chat.png" alt="chat" style="width:400px">
@@ -79,7 +79,7 @@ public class ChatWebSocketHandler implements WebSocketHandler {
 -->
 
 The [`WebSocketConfig`](./src/main/java/csci318/demo/infrastructure/ws/WebSocketConfig.java)
-class defines the WebSocket endpoint and maps it to the ChatWebSocketHandler.
+class defines the WebSocket endpoint and maps it to the [`ChatWebSocketHandler`](./src/main/java/csci318/demo/presentation/websocket/ChatWebSocketHandler.java).
 <!--
 ```java
 @Configuration
